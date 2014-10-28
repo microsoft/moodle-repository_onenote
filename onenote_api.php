@@ -165,7 +165,7 @@ class microsoft_onenote extends oauth2_client {
             $temp_folder = microsoft_onenote::create_temp_folder();
             
             $files_folder = join(DIRECTORY_SEPARATOR, array(trim($temp_folder, DIRECTORY_SEPARATOR), 'page_files'));
-            if (!mkdir($files_folder))
+            if (!mkdir($files_folder, 0777, true))
                 return null;
             
             $this->isget = FALSE;
@@ -620,7 +620,7 @@ class microsoft_onenote extends oauth2_client {
                 $filelist = $fp->extract_to_pathname(reset($files), $temp_folder);
                 
                 $postdata = microsoft_onenote::create_postdata_from_folder(
-                        microsoft_onenote::format_assignment_title($assign, $student_name, false), 
+                        microsoft_onenote::format_assignment_title($assign, $student_name, true), 
                         join(DIRECTORY_SEPARATOR, array(trim($temp_folder, DIRECTORY_SEPARATOR), '0')), $BOUNDARY);
                 } else {
                     return null;
@@ -981,7 +981,7 @@ POSTDATA;
             fulldelete($temp_folder);
         }
     
-        if (!mkdir($temp_folder))
+        if (!mkdir($temp_folder, 0777, true))
             return null;
     
         return $temp_folder;
